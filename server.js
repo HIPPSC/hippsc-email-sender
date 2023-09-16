@@ -7,6 +7,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// For development: Allow requests from localhost
+if (process.env.NODE_ENV !== 'production') {
+    app.use(cors({
+        origin: 'http://localhost:3000'
+    }));
+} else {
+    // For production: Allow requests only from your production domain
+    app.use(cors({
+        origin: 'https://hippsc-email-sender.vercel.app'  // replace with your actual production domain
+    }));
+}
+
 // Your SendGrid API Key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 

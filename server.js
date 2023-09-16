@@ -22,9 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
 // Your SendGrid API Key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Use CORS middleware before other routes
-app.use(cors());
-
 // Parse JSON request bodies
 app.use(express.json()); 
 

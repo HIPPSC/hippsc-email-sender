@@ -2,12 +2,20 @@ const express = require('express');
 const sgMail = require('@sendgrid/mail');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
-
+const path = require('path');
 
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Serve static files from the React app
+app.use(express.static('public'));
+
+// Serve favicon
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
+});
 
 
 // cors options
@@ -22,12 +30,6 @@ app.use(cors(corsOptions));
 
 // Parse JSON request bodies
 app.use(express.json()); 
-
-
-// Ignore favicon requests
-app.get('/favicon.ico', (req, res) => {
-    res.status(204).send();
-});
 
 // Home route
 app.get('/', (req, res) => {

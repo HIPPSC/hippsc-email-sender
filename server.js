@@ -26,6 +26,8 @@ app.use(express.json());
 app.post('/send-email', async (req, res) => {
     const { formData } = req.body;
 
+    console.log(formData)
+
     const msg = {
         to: process.env.RECIPIENT,
         from: process.env.EMAIL_USER,

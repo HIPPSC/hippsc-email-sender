@@ -16,6 +16,18 @@ const corsOptions = {
   
 app.use(cors(corsOptions));
 
+
+// Ignore favicon requests
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).send();
+});
+
+// Home route
+app.get('/', (req, res) => {
+    res.send('Hello, this is my Express app!');
+});
+
+
 // Your SendGrid API Key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 

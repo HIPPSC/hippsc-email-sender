@@ -22,11 +22,19 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // Parse JSON request bodies
 app.use(express.json()); 
 
+
+// API limiter
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100,
+    message: "Too many requests from this IP. Please try again later."
+});
+app.use("/send-email", apiLimiter);
+
+
 // Send email API
 app.post('/send-email', async (req, res) => {
     const { formData } = req.body;
-
-    console.log(formData)
 
     const msg = {
         to: process.env.RECIPIENT,
@@ -40,7 +48,7 @@ app.post('/send-email', async (req, res) => {
         res.status(200).send('Email sent');
     } catch (error) {
         console.error("Error sending email:", error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send(`Internal Server Error: ${error.message}`);
     }
 });
 

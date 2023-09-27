@@ -1,6 +1,8 @@
 const express = require('express');
 const sgMail = require('@sendgrid/mail');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+
 
 require('dotenv').config();
 
@@ -8,13 +10,18 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 
+// cors options
 const corsOptions = {
     origin: 'http://localhost:3000', 
     methods: 'POST',
     allowedHeaders: ['Content-Type', 'Authorization']
 };
   
+// Enable cors
 app.use(cors(corsOptions));
+
+// Parse JSON request bodies
+app.use(express.json()); 
 
 
 // Ignore favicon requests
@@ -31,8 +38,6 @@ app.get('/', (req, res) => {
 // Your SendGrid API Key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Parse JSON request bodies
-app.use(express.json()); 
 
 
 // API limiter

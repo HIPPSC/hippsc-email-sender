@@ -20,9 +20,10 @@ app.get('/favicon.ico', (req, res) => {
 
 // cors options
 const corsOptions = {
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:3000',
     methods: 'POST',
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 };
   
 // Enable cors

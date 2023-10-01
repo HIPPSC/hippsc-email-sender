@@ -1,11 +1,4 @@
 {
-    "routes": [
-      {
-        "src": "/.*",
-        "dest": "server.js"
-      }
-    ],
-    
     "headers": [
       {
         "source": "/send-email",

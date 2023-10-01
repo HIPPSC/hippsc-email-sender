@@ -20,7 +20,7 @@ app.get('/favicon.ico', (req, res) => {
 
 // cors options
 const corsOptions = {
-    origin: 'https://hippsc.netlify.app',
+    origin: 'https://hippsc.netlify.app/',
     methods: 'POST',
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true

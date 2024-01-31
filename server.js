@@ -40,12 +40,14 @@ app.get('/', (req, res) => {
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Replace with your email service
+    host: "smtp.exmail.qq.com",
+    port: 465,
+    secure: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
 // Send email API
 app.post('/send-email', async (req, res) => {

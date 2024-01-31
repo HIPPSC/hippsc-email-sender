@@ -44,12 +44,12 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 // API limiter
-const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 100,
-    message: "Too many requests from this IP. Please try again later."
-});
-app.use("/send-email", apiLimiter);
+// const apiLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, 
+//     max: 100,
+//     message: "Too many requests from this IP. Please try again later."
+// });
+// app.use("/send-email", apiLimiter);
 
 
 // Send email API

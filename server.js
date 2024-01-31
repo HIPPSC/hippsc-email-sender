@@ -1,13 +1,15 @@
 const express = require('express');
-const sgMail = require('@sendgrid/mail');
 const cors = require('cors');
-const rateLimit = require('express-rate-limit');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// enable trust proxy
+app.set('trust proxy', true);
 
 // Serve static files from the React app
 app.use(express.static('public'));
@@ -17,7 +19,6 @@ app.get('/favicon.ico', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
 });
 
-
 // cors options
 const corsOptions = {
     origin: 'https://www.hippsc.com',
@@ -25,7 +26,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 };
-  
+
 // Enable cors
 app.use(cors(corsOptions));
 
@@ -37,34 +38,28 @@ app.get('/', (req, res) => {
     res.send('Hello, this is my Express app!');
 });
 
-
-// Your SendGrid API Key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-
-
-// API limiter
-// const apiLimiter = rateLimit({
-//     windowMs: 15 * 60 * 1000, 
-//     max: 100,
-//     message: "Too many requests from this IP. Please try again later."
-// });
-// app.use("/send-email", apiLimiter);
-
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // Replace with your email service
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
 
 // Send email API
 app.post('/send-email', async (req, res) => {
     const { formData } = req.body;
 
-    const msg = {
-        to: process.env.RECIPIENT,
+    const mailOptions = {
         from: process.env.EMAIL_USER,
+        to: process.env.RECIPIENT,
         subject: 'New Quote Request',
         text: JSON.stringify(formData, null, 2)
     };
 
     try {
-        await sgMail.send(msg);
+        await transporter.sendMail(mailOptions);
         res.status(200).send('Email sent');
     } catch (error) {
         console.error("Error sending email:", error);
